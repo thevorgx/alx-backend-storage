@@ -1,4 +1,4 @@
 // update documents with a filter by adding address
 const filter = { name: "Holberton school" }
 const new_attr = { address: "972 Mission street" }
-db.school.update(filter, { $set: new_attr} )
+db.school.update(filter, { $set: new_attr}, { multi: true } )
