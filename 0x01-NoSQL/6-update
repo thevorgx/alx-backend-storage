@@ -1,2 +1,4 @@
 // update documents with a filter by adding address
-db.school.updateMany({ name: "Holberton school" }, { $set: { address: "972 Mission street" }} )
+const filter = { name: "Holberton school" }
+const new_attr = { address: "972 Mission street" }
+db.school.update(filter, { $set: new_attr} )
