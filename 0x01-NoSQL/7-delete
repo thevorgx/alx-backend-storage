@@ -1,0 +1,3 @@
+// delete documents with a filter
+const filter = { name: "Holberton school" }
+db.school.deleteMany(filter)
