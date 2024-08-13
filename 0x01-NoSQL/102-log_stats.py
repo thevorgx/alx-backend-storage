@@ -28,7 +28,7 @@ if __name__ == "__main__":
             }
         },
         {
-            "$sort": {"ip_count": -1}
+            "$sort": {"ip_count": -1, "_id": -1}
         },
         {
             "$limit": 10
