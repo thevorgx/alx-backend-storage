@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """for future Vorg:
-aggregation are on 2 steps:
-1- assemble name and create a new  temporary field named averageScore
-where scores of each topic are added and averaged using $avg.
+the aggregation is on 2 steps:
+1- using $project to assemble name and create a new temporary field named
+averageScore where scores of each topic are added and averaged using $avg.
 2- sort the average score using $sort, -1 means from top to bottom
 ps: even the id is needed on the output didn't include it on the stage 1
 because in Mongodb it's included by default."""
