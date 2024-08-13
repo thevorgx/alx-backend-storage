@@ -1,0 +1,2 @@
+// find all documents in school with name: that start with "Holberton" using ragex
+db.school.find( { "name": /^Holberton/ } )
