@@ -19,3 +19,29 @@ if __name__ == "__main__":
     status_check_count = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"})
     print(f"{status_check_count} status check")
+
+    aggregation_stages = [
+        {
+            "$group": {
+                "_id": "$ip",
+                "ip_count": {"$sum": 1}
+            }
+        },
+        {
+            "$sort": {"ip_count": -1}
+        },
+        {
+            "$limit": 10
+        },
+        {
+            "$project": {
+                "ip": "$_id",
+                "ip_count": 1,
+                "_id": 0
+            }
+        }
+    ]
+    top_ips = nginx_collection.aggregate(aggregation_stages)
+    print("IPs:")
+    for ip in top_ips:
+        print(f"\t{ip['ip']}: {ip['ip_count']}")
