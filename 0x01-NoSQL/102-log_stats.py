@@ -44,4 +44,4 @@ if __name__ == "__main__":
     top_ips = nginx_collection.aggregate(aggregation_stages)
     print("IPs:")
     for ip in top_ips:
-        print(f"\t{ip['ip']}: {ip['ip_count']}")
+        print(f"    {ip['ip']}: {ip['ip_count']}")
