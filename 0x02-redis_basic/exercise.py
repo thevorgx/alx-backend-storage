@@ -7,7 +7,9 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-    """count the number of time methods of Cache class are called."""
+    """Decorator count the number of time methods of Cache class
+    are called.
+    """
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         """Wrapper function that increments the call count
@@ -18,6 +20,22 @@ def count_calls(method: Callable) -> Callable:
         return(method(self, *args, *kwargs))
 
     return(wrapper)
+
+
+def call_history(method: Callable) -> Callable:
+    """Decorator to store function call history in redis"""
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """Wrapper function that logs input and output in redis"""
+        inps = f"{method.__qualname__}:inputs"
+        outs = f"{method.__qualname__}:outputs"
+
+        self._redis.rpush(inps, str(args))
+        ex_original_func = method(self, *args, **kwargs)
+        self._redis.rpush(outs, str(ex_original_func))
+
+        return (ex_original_func)
+    return (wrapper)
 
 
 class Cache:
@@ -31,6 +49,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ store data in redis with a random key(string)
         as a key = value.
