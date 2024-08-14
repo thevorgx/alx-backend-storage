@@ -6,6 +6,25 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
+def replay(method: Callable):
+    """place holder for now"""
+    input_key = f"{method.__qualname__}:inputs"
+    output_key = f"{method.__qualname__}:outputs"
+
+    redis_client = redis.Redis()
+
+    inputs = redis_client.lrange(input_key, 0, -1)
+    outputs = redis_client.lrange(output_key, 0, -1)
+
+    assert len(inputs) == len(outputs)
+
+    print(f"{method.__qualname__} was called {len(inputs)} times:")
+    for input_value, output_value in zip(inputs, outputs):
+        input_str = input_value.decode('utf-8')
+        output_str = output_value.decode('utf-8')
+        print(f"{method.__qualname__}(*{input_str}) -> {output_str}")
+
+
 def count_calls(method: Callable) -> Callable:
     """Decorator count the number of time methods of Cache class
     are called.
